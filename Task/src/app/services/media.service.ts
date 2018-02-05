@@ -9,6 +9,9 @@ export class MediaService {
   username: string;
   password: string;
   status: string;
+  file: File;
+  title: string;
+  description: string;
 
   baseURL = 'http://media.mw.metropolia.fi/wbma';
 
@@ -48,6 +51,19 @@ export class MediaService {
 
   public register(user) {
     return this.http.post(this.baseURL + '/users', user);
+  }
+
+  upload(formData) {
+    const settings = {
+      headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
+    };
+
+    return this.http.post(this.baseURL + '/media', formData, settings).subscribe(response => {
+      console.log(response);
+    }, (error: HttpErrorResponse) => {
+      console.log(error.error.message);
+    });
+
   }
 
 }
